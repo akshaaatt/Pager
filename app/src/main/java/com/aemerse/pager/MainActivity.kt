@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var serverClass: ServerClass? = null
     var clientClass: ClientClass? = null
     private var menu: Menu? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -140,8 +141,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mIntentFilter!!.addAction(WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
     }
 
-    fun checkLocationEnabled() {
-        val lm = this@MainActivity.getSystemService(LOCATION_SERVICE) as LocationManager
+    private fun checkLocationEnabled() {
+        val lm = getSystemService(LOCATION_SERVICE) as LocationManager
         var gpsEnabled = false
         var networkEnabled = false
         try {
@@ -172,20 +173,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val device = customPeers[idx].device
             val config = WifiP2pConfig()
             config.deviceAddress = device!!.deviceAddress
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
             mManager!!.connect(mChannel, config, object : ActionListener {
                 override fun onSuccess() {
                     Toast.makeText(
@@ -234,20 +221,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun discoverDevices() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
         mManager!!.discoverPeers(mChannel, object : ActionListener {
             override fun onSuccess() {
                 connectionStatus!!.text = "Discovery Started"

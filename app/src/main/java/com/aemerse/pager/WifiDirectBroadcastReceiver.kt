@@ -16,29 +16,17 @@ class WifiDirectBroadcastReceiver(private val mManager: WifiP2pManager?, private
         val action = intent.action
         when {
             WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION == action -> {
-                val state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)
-                if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                    Toast.makeText(context, "WIFI is On", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "WIFI is OFF", Toast.LENGTH_SHORT).show()
+                when (intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)) {
+                    WifiP2pManager.WIFI_P2P_STATE_ENABLED -> {
+                        Toast.makeText(context, "WIFI is On", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        Toast.makeText(context, "WIFI is OFF", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION == action -> {
                 if (mManager != null) {
-                    if (ActivityCompat.checkSelfPermission(
-                            context,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return
-                    }
                     mManager.requestPeers(mChannel, mActivity.peerListListener)
                     Log.e("DEVICE_NAME", "WIFI P2P peers changed called")
                 }
