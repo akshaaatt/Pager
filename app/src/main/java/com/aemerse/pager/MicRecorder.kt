@@ -37,7 +37,7 @@ class MicRecorder : Runnable {
             record.startRecording()
             Log.e("AUDIO", "STARTED RECORDING")
             while (keepRecording) {
-                val numberOfBytes = record.read(audioBuffer, 0, audioBuffer.size)
+                record.read(audioBuffer, 0, audioBuffer.size)
                 val writeToOutputStream = Runnable {
                     try {
                         outputStream.write(audioBuffer)

@@ -1,14 +1,14 @@
 package com.aemerse.pager
 
 import android.Manifest
-import android.net.wifi.p2p.WifiP2pManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.widget.Toast
-import android.util.Log
 import android.net.NetworkInfo
+import android.net.wifi.p2p.WifiP2pManager
+import android.util.Log
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 
 class WifiDirectBroadcastReceiver(private val mManager: WifiP2pManager?, private val mChannel: WifiP2pManager.Channel, private val mActivity: MainActivity) : BroadcastReceiver() {
@@ -27,6 +27,9 @@ class WifiDirectBroadcastReceiver(private val mManager: WifiP2pManager?, private
             }
             WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION == action -> {
                 if (mManager != null) {
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return
+                    }
                     mManager.requestPeers(mChannel, mActivity.peerListListener)
                     Log.e("DEVICE_NAME", "WIFI P2P peers changed called")
                 }

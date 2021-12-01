@@ -7,5 +7,5 @@ class CustomDevice {
     var id = 0
     var deviceName: String? = null
     var device: WifiP2pDevice? = null
-    var icon_view: View? = null
+    var iconView: View? = null
 }

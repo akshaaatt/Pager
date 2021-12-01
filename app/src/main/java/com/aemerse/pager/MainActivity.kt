@@ -173,6 +173,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val device = customPeers[idx].device
             val config = WifiP2pConfig()
             config.deviceAddress = device!!.deviceAddress
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return
+            }
             mManager!!.connect(mChannel, config, object : ActionListener {
                 override fun onSuccess() {
                     Toast.makeText(
@@ -221,6 +228,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun discoverDevices() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         mManager!!.discoverPeers(mChannel, object : ActionListener {
             override fun onSuccess() {
                 connectionStatus!!.text = "Discovery Started"
@@ -260,7 +274,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             // add all already present devices to the view
             for (d in deviceAlreadyPresent) {
-                rippleBackground!!.addView(d.icon_view)
+                rippleBackground!!.addView(d.iconView)
             }
             for (device in peersList.deviceList) {
                 if (checkPeersListByName(device.deviceName) == -1) {
@@ -272,7 +286,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     tmpDeviceObj.deviceName = device.deviceName
                     tmpDeviceObj.id = tmpDevice.id
                     tmpDeviceObj.device = device
-                    tmpDeviceObj.icon_view = tmpDevice
+                    tmpDeviceObj.iconView = tmpDevice
                     customPeers.add(tmpDeviceObj)
                 }
             }

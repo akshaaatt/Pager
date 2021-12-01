@@ -36,29 +36,31 @@ class ChatWindow : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.send_file_btn -> if (sendBtn!!.text.toString() == "TALK") {
-                // stream audio
-                sendBtn!!.text = "OVER"
-                micRecorder = MicRecorder()
-                t = Thread(micRecorder)
-                if (micRecorder != null) {
-                    MicRecorder.keepRecording = true
-                }
-                t!!.start()
+            R.id.send_file_btn -> when {
+                sendBtn!!.text.toString() == "TALK" -> {
+                    // stream audio
+                    sendBtn!!.text = "OVER"
+                    micRecorder = MicRecorder()
+                    t = Thread(micRecorder)
+                    if (micRecorder != null) {
+                        MicRecorder.keepRecording = true
+                    }
+                    t!!.start()
 
-                // start animation
-                rippleBackground!!.startRippleAnimation()
-            } else if (sendBtn!!.text.toString() == "OVER") {
-                sendBtn!!.text = "TALK"
-                if (micRecorder != null) {
-                    MicRecorder.keepRecording = false
+                    // start animation
+                    rippleBackground!!.startRippleAnimation()
                 }
+                sendBtn!!.text.toString() == "OVER" -> {
+                    sendBtn!!.text = "TALK"
+                    if (micRecorder != null) {
+                        MicRecorder.keepRecording = false
+                    }
 
-                // stop animation
-                rippleBackground!!.clearAnimation()
-                rippleBackground!!.stopRippleAnimation()
+                    // stop animation
+                    rippleBackground!!.clearAnimation()
+                    rippleBackground!!.stopRippleAnimation()
+                }
             }
-            else -> {}
         }
     }
 

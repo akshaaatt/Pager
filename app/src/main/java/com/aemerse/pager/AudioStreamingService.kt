@@ -50,13 +50,12 @@ class AudioStreamingService : Service() {
             audioTrack!!.play()
             Log.v("PLAY", "Audio streaming started")
             val buffer = ByteArray(bufferSize)
-            val offset = 0
             try {
                 val inputStream = socket!!.getInputStream()
-                var bytes_read = inputStream.read(buffer, 0, bufferSize)
-                while (keepPlaying && bytes_read != -1) {
+                var bytesRead = inputStream.read(buffer, 0, bufferSize)
+                while (keepPlaying && bytesRead != -1) {
                     audioTrack!!.write(buffer, 0, buffer.size)
-                    bytes_read = inputStream.read(buffer, 0, bufferSize)
+                    bytesRead = inputStream.read(buffer, 0, bufferSize)
                 }
                 inputStream.close()
                 audioTrack!!.release()
